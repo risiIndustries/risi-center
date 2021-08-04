@@ -10,12 +10,27 @@ class RcStackPage(Gtk.Box):
         self.id = page_id
         self.stack_widget_args = args
         self.stack_widget_kwargs = kwargs
+        # self.set_hexpand(True)
+        # self.set_vexpand(True)
 
 
 def generate_widgets(stack, pages):
     for page in pages:
+        for child in page.get_children():
+            child.destroy()
         if page == stack.get_visible_child():
-            page.add(page.widget())
-        elif page.get_children() == [] or not page.get_children():
-            for child in page.get_children():
-                child.destroy()
+            widget = page.stack_widget(*page.stack_widget_args, **page.stack_widget_kwargs)
+            page.add(widget)
+            widget.show_all()
+
+
+def get_page_by_id(pages, page_id):
+    for page in pages:
+        if page_id == page.id:
+            return page
+    return None
+
+
+def set_child(stack, pages, page_id):
+    stack.set_visible_child(get_page_by_id(pages, page_id))
+    generate_widgets(stack, pages)

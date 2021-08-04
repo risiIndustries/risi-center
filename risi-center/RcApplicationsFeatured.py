@@ -26,4 +26,7 @@ class RcApplicationsFeatured(Gtk.ScrolledWindow):
         self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps))
         self.box.add(RcBaseWidgets.Featured("Used By The risiOS Team", test_apps))
 
+        self.set_hexpand(True)
+        self.set_vexpand(True)
+
         self.add(self.box)

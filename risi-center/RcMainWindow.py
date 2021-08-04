@@ -46,7 +46,6 @@ class RcMainWindow(Gtk.ApplicationWindow):
 
         self.add(self.window_stack)
 
-
     def go_back(self, button):
         pass
 

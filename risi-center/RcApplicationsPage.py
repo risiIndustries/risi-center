@@ -14,6 +14,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('AppStreamGlib', '1.0')
 from gi.repository import Gtk
 
+
 class RcApplicationsStack(Gtk.Box):
     def __init__(self, apps):
         Gtk.Box.__init__(self)
@@ -37,17 +38,20 @@ class RcApplicationsStack(Gtk.Box):
             )
         ]
 
-        for page in self.pages:
-            self.stack.add_named(page, page.id)
+        # for page in self.pages:
+        self.stack.add(self.pages[0])
+        self.stack.add(self.pages[1])
+        self.stack.add(self.pages[2])
 
-        self.stack.set_hexpand(True)
-        self.stack.set_vexpand(True)
+        # self.stack.set_hexpand(True)
+        # self.stack.set_vexpand(True)
+
         self.stack_sidebar = RcApplicationsSidebar.RcApplicationsSidebar(self)
-        self.stack.set_visible_child_name("featured")
-        print(self.stack.get_visible_child_name())
-        RcStackPage.generate_widgets(self.stack, self.pages)
+        self.stack.set_visible_child(self.pages[0])
+
         self.add(RcApplicationsSidebar.RcApplicationsSidebar(self))
         self.add(self.stack)
+        self.connect("show", shown)
 
         # Needed Pages:
         #  Featured Applications
@@ -55,3 +59,7 @@ class RcApplicationsStack(Gtk.Box):
         #  Categories
         #  Search (on the bottom)
         #  Alternatives (on the bottom)
+
+
+def shown(widget):
+    RcStackPage.generate_widgets(widget.stack, widget.pages)

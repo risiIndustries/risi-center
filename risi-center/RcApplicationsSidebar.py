@@ -1,6 +1,7 @@
 import gi
 
 import RcBaseWidgets
+import RcStackPage
 
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -74,12 +75,10 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
         self.bottom_list.unselect_all()
 
     def category_clicked(self, listbox, listbox_row):
-        #self.category_case[listbox_row.get_index()]()
         self.top_list.unselect_all()
         self.bottom_list.unselect_all()
 
     def bottom_listbox_clicked(self, listbox, listbox_row):
-        #self.bottom_list_case[listbox_row.get_index()]()
         self.top_list.unselect_all()
         self.category_list.unselect_all()
 
@@ -87,12 +86,11 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
         self.category_revealer.set_reveal_child(not self.category_revealer.get_reveal_child())
 
     def stack_page_featured(self):
-        print("meme")
-        #self.stack.stack.set_visible_child_name("featured")
+        RcStackPage.set_child(self.stack.stack, self.stack.pages, "featured")
 
     def stack_page_games(self):
-        print("meme")
-        #self.stack.stack.set_visible_child_name("games")
+        RcStackPage.set_child(self.stack.stack, self.stack.pages, "games")
+
 
 def change_stack(stack, page):
     pass
