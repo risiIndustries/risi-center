@@ -8,16 +8,15 @@ from gi.repository import Gtk
 
 categories = [
     ["Audio", "Audio"],
-    ["Internet", "Network"],
-    ["Video", "Video"],
     ["Development", "Development"],
     ["Education", "Education"],
     ["Games", "Games"],
     ["Graphics", "Graphics"],
-    ["Network", "Network"],
+    ["Internet", "Network"],
     ["Productivity", "Office"],
     ["Science", "Science"],
-    ["Utility", "Utility"]
+    ["Utility", "Utility"],
+    ["Video", "Video"]
 ]
 
 
@@ -77,6 +76,8 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
     def category_clicked(self, listbox, listbox_row):
         self.top_list.unselect_all()
         self.bottom_list.unselect_all()
+        RcStackPage.set_child(self.stack.stack, self.stack.pages, categories[listbox_row.get_index()][0].lower())
+        print(categories[listbox_row.get_index()][0])
 
     def bottom_listbox_clicked(self, listbox, listbox_row):
         self.top_list.unselect_all()
@@ -89,7 +90,7 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
         RcStackPage.set_child(self.stack.stack, self.stack.pages, "featured")
 
     def stack_page_games(self):
-        RcStackPage.set_child(self.stack.stack, self.stack.pages, "games")
+        RcStackPage.set_child(self.stack.stack, self.stack.pages, "featured_games")
 
 
 def change_stack(stack, page):

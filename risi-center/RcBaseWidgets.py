@@ -15,6 +15,8 @@ class ListView(Gtk.FlowBox):
         self.set_max_children_per_line(2)
         self.set_min_children_per_line(1)
         self.set_homogeneous(True)
+        self.set_row_spacing(5)
+        self.set_column_spacing(5)
         for app in apps:
             frame = Gtk.Frame()
             frame.get_style_context().add_class('view')
@@ -26,7 +28,9 @@ class ListView(Gtk.FlowBox):
 class ListApp(Gtk.Box):
     def __init__(self, app):
         Gtk.Box.__init__(self)
-        self.add(Gtk.Image.new_from_pixbuf(app.icon))
+        self.image = Gtk.Image.new_from_pixbuf(app.icon)
+        self.image.set_margin_end(5)
+
         self.label_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.label_box.set_margin_start(5)
         self.title = Gtk.Label(xalign=0)
@@ -59,6 +63,12 @@ class ListApp(Gtk.Box):
             )
             self.comment.set_ellipsize(Pango.EllipsizeMode.END)
             self.label_box.add(self.comment)
+
+        self.set_margin_start(10)
+        self.set_margin_end(10)
+        self.set_margin_top(10)
+        self.set_margin_bottom(10)
+        self.add(self.image)
         self.add(self.label_box)
 
 

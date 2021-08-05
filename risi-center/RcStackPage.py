@@ -1,4 +1,4 @@
-import gi
+import gi, time
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
@@ -10,8 +10,6 @@ class RcStackPage(Gtk.Box):
         self.id = page_id
         self.stack_widget_args = args
         self.stack_widget_kwargs = kwargs
-        # self.set_hexpand(True)
-        # self.set_vexpand(True)
 
 
 def generate_widgets(stack, pages):

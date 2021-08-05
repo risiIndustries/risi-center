@@ -6,7 +6,7 @@ import gi
 
 import RcApplicationsFeatured
 import RcApplicationsGames
-import RcApplicationsCategories
+import RcApplicationsCategory
 import RcApplicationsSidebar
 import RcStackPage
 
@@ -28,20 +28,73 @@ class RcApplicationsStack(Gtk.Box):
             ),
             RcStackPage.RcStackPage(
                 RcApplicationsGames.RcApplicationsGames,
-                "games",
+                "featured_games",
                 apps
             ),
             RcStackPage.RcStackPage(
-                RcApplicationsCategories.RcApplicationsCategories,
-                "categories",
-                apps
+                RcApplicationsCategory.RcApplicationsCategory,
+                "audio",
+                apps,
+                "Audio"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "development",
+                apps,
+                "Development"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "education",
+                apps,
+                "Education"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "games",
+                apps,
+                "Game"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "graphics",
+                apps,
+                "Graphics"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "internet",
+                apps,
+                "Network"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "productivity",
+                apps,
+                "Office"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "science",
+                apps,
+                "Science"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "utility",
+                apps,
+                "Utility"
+            ),
+            RcStackPage.RcStackPage(
+                RcApplicationsCategory.RcApplicationsCategory,
+                "video",
+                apps,
+                "Video"
             )
         ]
 
-        # for page in self.pages:
-        self.stack.add(self.pages[0])
-        self.stack.add(self.pages[1])
-        self.stack.add(self.pages[2])
+        for page in self.pages:
+            self.stack.add(page)
 
         # self.stack.set_hexpand(True)
         # self.stack.set_vexpand(True)

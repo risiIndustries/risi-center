@@ -37,12 +37,14 @@ def get_source_from_origin(origin):
             return source
     return None
 
+
 def test_app():
     return App(
         name="Test App",
         comment="This is a test app for testing labels on a stupid project that doesn't work.",
         icon=missing_icon
     )
+
 
 class App:
     def __init__(self, **kwargs):
@@ -163,3 +165,12 @@ def dict_combine(d1, d2):
         else:
             d1[key] = d2[key]
     return d1
+
+
+def check_apps_for_category(apps, category):
+    d1 = apps
+    d2 = {}
+    for key in d1:
+        if category in d1[key].categories:
+            d2[key] = d1[key]
+    return d2
