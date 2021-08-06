@@ -28,6 +28,9 @@ class RcApplicationsGames(Gtk.ScrolledWindow):
         self.set_margin_bottom(30)
 
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.box.set_margin_start(30)
+        self.box.set_margin_top(30)
+        self.box.set_margin_bottom(30)
         self.box.set_spacing(20)
         self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps))
         self.box.add(RcBaseWidgets.Featured("Best Graphics", test_apps))
