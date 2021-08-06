@@ -101,8 +101,8 @@ def get_apps():
                 flatpak_apps = store_to_dict(store, remote, True)
             apps = dict_combine(apps, flatpak_apps)
 
-    for key in apps:
-        print(key, apps[key].name, [apps[key].package_names, apps[key].package_types, apps[key].origins])
+    # for key in apps:
+        # print(key, apps[key].name, [apps[key].package_names, apps[key].package_types, apps[key].origins])
 
     return apps
 
@@ -167,10 +167,7 @@ def dict_combine(d1, d2):
     return d1
 
 
-def check_apps_for_category(apps, category):
-    d1 = apps
-    d2 = {}
-    for key in d1:
-        if category in d1[key].categories:
-            d2[key] = d1[key]
-    return d2
+def category_filter(app, category):
+    if category in app.categories:
+        return True
+    False

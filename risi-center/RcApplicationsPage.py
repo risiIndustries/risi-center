@@ -33,9 +33,9 @@ class RcApplicationsStack(Gtk.Box):
             ),
             RcStackPage.RcStackPage(
                 RcApplicationsCategory.RcApplicationsCategory,
-                "audio",
+                "audio_and_video",
                 apps,
-                "Audio"
+                "AudioVideo"
             ),
             RcStackPage.RcStackPage(
                 RcApplicationsCategory.RcApplicationsCategory,
@@ -95,9 +95,6 @@ class RcApplicationsStack(Gtk.Box):
 
         for page in self.pages:
             self.stack.add(page)
-
-        # self.stack.set_hexpand(True)
-        # self.stack.set_vexpand(True)
 
         self.stack_sidebar = RcApplicationsSidebar.RcApplicationsSidebar(self)
         self.stack.set_visible_child(self.pages[0])

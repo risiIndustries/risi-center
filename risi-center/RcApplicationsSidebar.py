@@ -7,7 +7,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 categories = [
-    ["Audio", "Audio"],
+    ["Audio and Video", "AudioVideo"],
     ["Development", "Development"],
     ["Education", "Education"],
     ["Games", "Games"],
@@ -16,7 +16,6 @@ categories = [
     ["Productivity", "Office"],
     ["Science", "Science"],
     ["Utility", "Utility"],
-    ["Video", "Video"]
 ]
 
 
@@ -76,8 +75,12 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
     def category_clicked(self, listbox, listbox_row):
         self.top_list.unselect_all()
         self.bottom_list.unselect_all()
-        RcStackPage.set_child(self.stack.stack, self.stack.pages, categories[listbox_row.get_index()][0].lower())
-        print(categories[listbox_row.get_index()][0])
+        RcStackPage.set_child(
+            self.stack.stack,
+            self.stack.pages,
+            categories[listbox_row.get_index()][0].lower().replace(" ", "_")
+        )
+        # print(categories[listbox_row.get_index()][0])
 
     def bottom_listbox_clicked(self, listbox, listbox_row):
         self.top_list.unselect_all()
