@@ -17,10 +17,12 @@ test_apps = {
     "app4": RcApps.test_app()
 }
 
+
 class RcApplicationsFeatured(Gtk.ScrolledWindow):
     def __init__(self, apps):
         Gtk.ScrolledWindow.__init__(self)
         self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.NEVER)
+
 
         self.set_margin_start(30)
         self.set_margin_top(30)
@@ -28,7 +30,6 @@ class RcApplicationsFeatured(Gtk.ScrolledWindow):
 
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.box.set_spacing(20)
-
         self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps))
         self.box.add(RcBaseWidgets.Featured("Used By The risiOS Team", test_apps))
 
