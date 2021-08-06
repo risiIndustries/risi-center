@@ -26,8 +26,6 @@ class RcApplicationsCategory(Gtk.ScrolledWindow):
         self.box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         self.center_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        self.set_margin_start(30)
-        self.set_margin_end(30)
         self.set_hexpand(True)
         self.set_vexpand(True)
 
@@ -44,6 +42,8 @@ class RcApplicationsCategory(Gtk.ScrolledWindow):
         )
         self.items.set_margin_top(30)
         self.items.set_margin_bottom(30)
+        self.items.set_margin_start(30)
+        self.items.set_margin_end(30)
 
         self.center_box.add(self.items)
         self.box.set_center_widget(self.center_box)
