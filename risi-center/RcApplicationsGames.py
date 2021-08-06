@@ -23,10 +23,6 @@ class RcApplicationsGames(Gtk.ScrolledWindow):
         Gtk.ScrolledWindow.__init__(self)
         self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.NEVER)
 
-        self.set_margin_start(30)
-        self.set_margin_top(30)
-        self.set_margin_bottom(30)
-
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.box.set_margin_start(30)
         self.box.set_margin_top(30)
