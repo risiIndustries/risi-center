@@ -46,12 +46,14 @@ class RcMainWindow(Gtk.ApplicationWindow):
         self.navigation_stack.add_titled(self.application_stack, "applications", "Applications")
 
         self.add(self.window_stack)
+        self.back_button.set_sensitive(False)
 
     def go_back(self, button):
         self.window_stack.set_visible_child(self.navigation_stack)
+        button.set_sensitive(self.check_back())
 
-    def check_back(self, button):
-        return self.window_stack.get_visible_child() == self.navigation_stack
+    def check_back(self):
+        return not self.window_stack.get_visible_child() == self.navigation_stack
 
     def load_app_page(self, app):
         self.app_screen_page.destroy()
@@ -61,3 +63,4 @@ class RcMainWindow(Gtk.ApplicationWindow):
 
         self.window_stack.add(self.app_screen_page)
         self.window_stack.set_visible_child(self.app_screen_page)
+        self.back_button.set_sensitive(self.check_back())

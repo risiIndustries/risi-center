@@ -28,7 +28,7 @@ class ListView(Gtk.FlowBox):
             self.add(item)
         self.connect("child_activated", self.activated)
 
-    def activated(self, child):
+    def activated(self, flowbox, child):
         self.get_toplevel().load_app_page(child.app)
 
 
