@@ -18,11 +18,18 @@ class ListView(Gtk.FlowBox):
         self.set_row_spacing(5)
         self.set_column_spacing(5)
         for app in apps:
+            item = Gtk.FlowBoxChild()
+            item.app = apps[app]
             frame = Gtk.Frame()
             frame.get_style_context().add_class('view')
             frame.add(ListApp(apps[app]))
             frame.set_size_request(350, -1)
-            self.add(frame)
+            item.add(frame)
+            self.add(item)
+        self.connect("child_activated", self.activated)
+
+    def activated(self, child):
+        self.get_toplevel().load_app_page(child.app)
 
 
 class ListApp(Gtk.Box):
@@ -76,12 +83,22 @@ class GridView(Gtk.ScrolledWindow):
     def __init__(self, apps):
         Gtk.ScrolledWindow.__init__(self)
         self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.NEVER)
-        self.box = Gtk.Box()
-        self.box.set_spacing(10)
+        self.box = Gtk.FlowBox()
+        self.box.set_orientation(Gtk.Orientation.VERTICAL)
+        self.box.set_halign(Gtk.Align.START)
+        #self.box.set_vadjustment(Gtk.Adjustment(value=1))
+        # self.box.set_spacing(10)
         for app in apps:
-            self.box.add(GridApp(apps[app]))
+            item = Gtk.FlowBoxChild()
+            item.app = apps[app]
+            item.add(GridApp(apps[app]))
+            self.box.add(item)
         self.add(self.box)
 
+        self.box.connect("child-activated", self.activated)
+
+    def activated(self, flowbox, child):
+        self.get_toplevel().load_app_page(child.app)
 
 class GridApp(Gtk.Box):
     def __init__(self, app):
@@ -95,6 +112,7 @@ class GridApp(Gtk.Box):
         self.title.get_style_context().add_class('heading')
         self.title.set_line_wrap(True)
         self.add(self.title)
+
 
 
 class Featured(Gtk.Box):

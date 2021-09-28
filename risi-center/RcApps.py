@@ -21,14 +21,36 @@ missing_icon = Gtk.IconTheme.get_default().load_icon(
 
 sources = []
 
+class SourceCommands:
+    def __init__(self):
+        self.install = []
+        self.remove = []
+        self.upgrade = []
+        self.upgrade_all = []
 
 class AppSource:
     def __init__(self, **kwargs):
+        self.queue = []
         self.package_type = RcUtils.set_if_key(kwargs, "package_type")
         self.origin = RcUtils.set_if_key(kwargs, "origin")
         self.origin_name = self.origin + " (" + self.package_type + ")"
+        self.commands = get_source_commands(package_type=self.package_type, origin=self.origin)
 
         sources.append(self)
+
+def get_source_commands(*args, **kwargs):
+    if RcUtils.set_if_key(kwargs, "package_type") == "dnf":
+        commands = SourceCommands()
+        commands.install = ["dnf", "install"]
+        commands.remove = ["dnf", "remove"]
+        commands.upgrade = ["dnf", "upgrade"]
+        commands.upgrade_all = ["dnf", "upgrade"]
+    elif RcUtils.set_if_key(kwargs, "package_type") == "flatpak":
+        commands = SourceCommands()
+        commands.install = ["flatpak", "install", RcUtils.set_if_key(kwargs, "origin")]
+        commands.remove = ["flatpak", "uninstall"]
+        commands.upgrade = ["flatpak", "update"]
+        commands.upgrade_all = ["flatpak", "update"]
 
 
 def get_source_from_origin(origin):
@@ -40,9 +62,20 @@ def get_source_from_origin(origin):
 
 def test_app():
     return App(
-        name="Test App",
-        comment="This is a test app for testing labels on a stupid project that doesn't work.",
-        icon=missing_icon
+        name="test_app",
+        appid="com.test.app",
+        package_name=["test", "test"],
+        package_type=["dnf", "flatpak"],
+        description="This is the description of my test app",
+        comment="This is a comment",
+
+        icon=Gtk.IconTheme.get_default().load_icon(
+            "package-x-generic",
+            64,
+            Gtk.IconLookupFlags.GENERIC_FALLBACK
+        ),
+
+        origin=["archlinux-arch-core", "archlinux-arch-extra"]
     )
 
 
@@ -83,6 +116,7 @@ def get_apps():
                 )
 
     if flatpaks:
+        flatpak_apps = []
         for remote in Flatpak.Installation.new_system(None).list_remotes():
             store = AppStreamGlib.Store()
             remote_path = remote.get_appstream_dir("x86_64").get_path()
@@ -95,7 +129,7 @@ def get_apps():
                             Gio.File.new_for_path(remote_path + "/" + file)
                         )
                     AppSource(
-                        origin=remote.get_name() + " (flatpak)",
+                        origin=remote.get_name(),
                         package_type="flatpak"
                     )
                 flatpak_apps = store_to_dict(store, remote, True)
@@ -122,19 +156,19 @@ def store_to_dict(store, package, is_flatpak):
                 app_icon = missing_icon
 
         if is_flatpak is True:
-            origin = package.get_name() + " (flatpak)"
+            origin = package.get_name()
             package_name = app.get_id()
             package_type = "flatpak"
         else:
             if app.get_pkgname_default() is None or app.get_origin() == "":
                 continue
-            origin = app.get_origin() + " (" + package + ")"
+            origin = app.get_origin()
             package_name = app.get_pkgname_default()
             package_type = package
 
         apps[app.get_id()] = App(
             name=app.get_name(),
-            id=app.get_id(),
+            appid=app.get_id(),
             package_name=[package_name],
             package_type=[package_type],
             description=app.get_description(),

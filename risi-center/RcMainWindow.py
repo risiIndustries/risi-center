@@ -4,6 +4,7 @@
 
 import RcApps
 import RcApplicationsPage
+import RcInstallationScreen
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppStreamGlib', '1.0')
@@ -13,7 +14,7 @@ from gi.repository import Gtk
 # Launches main window of risiTweaks
 class RcMainWindow(Gtk.ApplicationWindow):
     def __init__(self, app):
-        Gtk.ApplicationWindow.__init__(self, application=app, title="Risi Center")
+        Gtk.ApplicationWindow.__init__(self, application=app, title="risiCenter")
         self.apps = RcApps.get_apps()
         self.set_default_size(-1, 500)
         self.set_position(Gtk.WindowPosition.CENTER)
@@ -36,8 +37,8 @@ class RcMainWindow(Gtk.ApplicationWindow):
         self.window_stack = Gtk.Stack()
         self.navigation_stack = Gtk.Stack()
         self.app_screen_page = Gtk.Box()
-        self.window_stack.add_named(self.navigation_stack, "navigation")
-        self.window_stack.add_named(self.app_screen_page, "app_screen")
+        self.window_stack.add(self.navigation_stack)
+        self.window_stack.add(self.app_screen_page)
         self.header.set_custom_title(Gtk.StackSwitcher(stack=self.navigation_stack))
 
         # Application Stack
@@ -47,10 +48,16 @@ class RcMainWindow(Gtk.ApplicationWindow):
         self.add(self.window_stack)
 
     def go_back(self, button):
-        pass
+        self.window_stack.set_visible_child(self.navigation_stack)
 
     def check_back(self, button):
-        pass
+        return self.window_stack.get_visible_child() == self.navigation_stack
 
     def load_app_page(self, app):
-        pass
+        self.app_screen_page.destroy()
+        self.app_screen_page = Gtk.Box()
+        self.app_screen_page.add(RcInstallationScreen.RcInstallationScreen(app))
+        self.app_screen_page.show_all()
+
+        self.window_stack.add(self.app_screen_page)
+        self.window_stack.set_visible_child(self.app_screen_page)

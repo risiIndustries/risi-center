@@ -80,7 +80,6 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
             self.stack.pages,
             categories[listbox_row.get_index()][0].lower().replace(" ", "_")
         )
-        # print(categories[listbox_row.get_index()][0])
 
     def bottom_listbox_clicked(self, listbox, listbox_row):
         self.top_list.unselect_all()
