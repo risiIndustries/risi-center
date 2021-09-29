@@ -1,6 +1,7 @@
 import gi, time
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+import RcApplicationsCategory
 
 
 class RcStackPage(Gtk.Box):
@@ -20,6 +21,10 @@ def generate_widgets(stack, pages):
             widget = page.stack_widget(*page.stack_widget_args, **page.stack_widget_kwargs)
             page.add(widget)
             widget.show_all()
+            print(widget)
+            # print(page.widget, RcApplicationsCategory.RcApplicationsCategory)
+            if isinstance(widget, RcApplicationsCategory.RcApplicationsCategory):
+                widget.load_apps()
 
 
 def get_page_by_id(pages, page_id):

@@ -17,19 +17,34 @@ class ListView(Gtk.FlowBox):
         self.set_homogeneous(True)
         self.set_row_spacing(5)
         self.set_column_spacing(5)
-        for app in apps:
-            item = Gtk.FlowBoxChild()
-            item.app = apps[app]
-            frame = Gtk.Frame()
-            frame.get_style_context().add_class('view')
-            frame.add(ListApp(apps[app]))
-            frame.set_size_request(350, -1)
-            item.add(frame)
-            self.add(item)
+        if apps is not None:
+            for app in apps:
+                item = Gtk.FlowBoxChild()
+                item.app = apps[app]
+                item.add(ListAppFrame(ListApp(apps[app])))
+                self.add(item)
         self.connect("child_activated", self.activated)
+
+    def add_app(self, apps, app):
+        item = Gtk.FlowBoxChild()
+        item.app = app
+        print(apps[app])
+        print(app)
+        item.add(ListAppFrame(ListApp(apps[app])))
+        self.add(item)
+        self.show_all()
 
     def activated(self, flowbox, child):
         self.get_toplevel().load_app_page(child.app)
+
+
+
+class ListAppFrame(Gtk.Frame):
+    def __init__(self, listapp):
+        Gtk.Frame.__init__(self)
+        self.get_style_context().add_class('view')
+        self.set_size_request(350, -1)
+        self.add(listapp)
 
 
 class ListApp(Gtk.Box):
