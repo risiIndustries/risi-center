@@ -1,3 +1,8 @@
+# This file is used for managing listed apps
+# Licensed Under GPL3
+# By PizzaLovingNerd
+
+# Temporary
 standard_packages = True
 flatpaks = True
 
@@ -9,10 +14,12 @@ gi.require_version('AppStreamGlib', '1.0')
 gi.require_version('Gtk', '3.0')
 from gi.repository import AppStreamGlib, Gtk, GLib, Gio
 
+# Only imports the flatpak library if "flatpaks" variable is set to true.
 if flatpaks:
     gi.require_version('Flatpak', '1.0')
     from gi.repository import Flatpak
 
+# Missing icon for packages.
 missing_icon = Gtk.IconTheme.get_default().load_icon(
     "package-x-generic",
     64,
@@ -21,6 +28,7 @@ missing_icon = Gtk.IconTheme.get_default().load_icon(
 
 sources = []
 
+# These are the commands a VTE will call when a action for a package is ran
 class SourceCommands:
     def __init__(self):
         self.install = []
@@ -28,6 +36,7 @@ class SourceCommands:
         self.upgrade = []
         self.upgrade_all = []
 
+# This is used to setup new sources that apps may come from.
 class AppSource:
     def __init__(self, **kwargs):
         self.queue = []
@@ -38,6 +47,7 @@ class AppSource:
 
         sources.append(self)
 
+# Gets the source commands and returns them depending on the package manager.
 def get_source_commands(*args, **kwargs):
     if RcUtils.set_if_key(kwargs, "package_type") == "dnf":
         commands = SourceCommands()
@@ -52,7 +62,7 @@ def get_source_commands(*args, **kwargs):
         commands.upgrade = ["flatpak", "update"]
         commands.upgrade_all = ["flatpak", "update"]
 
-
+# Gets the source from origin (repo name)
 def get_source_from_origin(origin):
     for source in sources:
         if origin == source.origin:
@@ -60,6 +70,7 @@ def get_source_from_origin(origin):
     return None
 
 
+# Temporary, this is a test app used for testing the homepage
 def test_app():
     return App(
         name="test_app",
@@ -79,6 +90,7 @@ def test_app():
     )
 
 
+# This is a class that is used to define apps.
 class App:
     def __init__(self, **kwargs):
         self.name = RcUtils.set_if_key(kwargs, "name")
@@ -101,13 +113,19 @@ class App:
         # source info needs package managers, package names, and source names
 
 
+# This grabs the apps from AppStream
 def get_apps():
     apps = {}
 
     if standard_packages:
         store = AppStreamGlib.Store()
         store.load(AppStreamGlib.StoreLoadFlags.APP_INFO_SYSTEM)
+
+        # Converts a AppStream store to a dictionary.
+        # This is used because of the fact that web apps won't share AppStream metadata.
         apps = store_to_dict(store, "dnf", False)
+
+        # Checks to make sure that every repo has it's own app origin.
         for key in apps:
             if get_source_from_origin(apps[key].origins[0]) is None:
                 AppSource(
@@ -117,6 +135,9 @@ def get_apps():
 
     if flatpaks:
         flatpak_apps = []
+
+        # Flatpaks aren't stored in the standard AppStream store
+        # so it has to load custom ones from Flatpak appstream directories
         for remote in Flatpak.Installation.new_system(None).list_remotes():
             store = AppStreamGlib.Store()
             remote_path = remote.get_appstream_dir("x86_64").get_path()
@@ -133,10 +154,10 @@ def get_apps():
                         package_type="flatpak"
                     )
                 flatpak_apps = store_to_dict(store, remote, True)
-            apps = dict_combine(apps, flatpak_apps)
 
-    # for key in apps:
-        # print(key, apps[key].name, [apps[key].package_names, apps[key].package_types, apps[key].origins])
+            # This combines the dnf apps with the flatpak_apps in the
+            # and makes sure that it combines the AppSource info.
+            apps = dict_combine(apps, flatpak_apps)
 
     return apps
 
@@ -144,6 +165,8 @@ def get_apps():
 def store_to_dict(store, package, is_flatpak):
     apps = {}
     for app in store.get_apps():
+
+        # Uses the app missing icon if there's no icon
         if app.get_icon_for_size(64, 64) is None:
             app_icon = missing_icon
         else:
@@ -155,17 +178,19 @@ def store_to_dict(store, package, is_flatpak):
             except GLib.Error:
                 app_icon = missing_icon
 
+        # I can't remember how this code works and I'm worried it may cause a bug in the future.
         if is_flatpak is True:
             origin = package.get_name()
             package_name = app.get_id()
             package_type = "flatpak"
         else:
-            if app.get_pkgname_default() is None or app.get_origin() == "":
+            if app.get_pkgname_default() is None or app.get_origin() == "": # Checks if app has DNF package
                 continue
             origin = app.get_origin()
             package_name = app.get_pkgname_default()
             package_type = package
 
+        # Sets all the info for an App class
         apps[app.get_id()] = App(
             name=app.get_name(),
             appid=app.get_id(),
@@ -187,9 +212,11 @@ def store_to_dict(store, package, is_flatpak):
             donation_page=app.get_url_item(AppStreamGlib.UrlKind.DONATION),
         )
 
+    # Returns a dictionary full of apps.
     return apps
 
 
+# Combines dictionaries and makes sure that apps with multiple packages has more than one.
 def dict_combine(d1, d2):
     for key in d2:
         if key in d1:
@@ -200,7 +227,7 @@ def dict_combine(d1, d2):
             d1[key] = d2[key]
     return d1
 
-
+# Checks if apps are in a category (Can be moved to category page class)
 def category_filter(app, category):
     if category in app.categories:
         return True

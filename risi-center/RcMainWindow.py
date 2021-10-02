@@ -48,14 +48,14 @@ class RcMainWindow(Gtk.ApplicationWindow):
         self.add(self.window_stack)
         self.back_button.set_sensitive(False)
 
-    def go_back(self, button):
+    def go_back(self, button): # Gos back to previous page.
         self.window_stack.set_visible_child(self.navigation_stack)
         button.set_sensitive(self.check_back())
 
-    def check_back(self):
+    def check_back(self): # Checks if the back button should be active.
         return not self.window_stack.get_visible_child() == self.navigation_stack
 
-    def load_app_page(self, app):
+    def load_app_page(self, app): # Loads an RcInstallationScreen page.
         self.app_screen_page.destroy()
         self.app_screen_page = Gtk.Box()
         self.app_screen_page.add(RcInstallationScreen.RcInstallationScreen(app))

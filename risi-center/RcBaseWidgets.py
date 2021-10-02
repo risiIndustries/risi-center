@@ -8,7 +8,7 @@ import RcUtils
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Pango, AppStreamGlib
 
-
+# Used to create a list of apps (like in category pages)
 class ListView(Gtk.FlowBox):
     def __init__(self, apps):
         Gtk.FlowBox.__init__(self)
@@ -25,20 +25,21 @@ class ListView(Gtk.FlowBox):
                 self.add(item)
         self.connect("child_activated", self.activated)
 
+    # Adds app to a ListView
     def add_app(self, apps, app):
         item = Gtk.FlowBoxChild()
-        item.app = app
-        print(apps[app])
-        print(app)
+        item.app = apps[app]
         item.add(ListAppFrame(ListApp(apps[app])))
         self.add(item)
         self.show_all()
 
+    # Loads page for the app when clicked
     def activated(self, flowbox, child):
         self.get_toplevel().load_app_page(child.app)
 
 
-
+# This is just a frame used for ListViews
+# Used to save a few lines of repeated code
 class ListAppFrame(Gtk.Frame):
     def __init__(self, listapp):
         Gtk.Frame.__init__(self)
@@ -46,13 +47,14 @@ class ListAppFrame(Gtk.Frame):
         self.set_size_request(350, -1)
         self.add(listapp)
 
-
+# This is the widget for a app listed inside a ListView
 class ListApp(Gtk.Box):
     def __init__(self, app):
         Gtk.Box.__init__(self)
         self.image = Gtk.Image.new_from_pixbuf(app.icon)
         self.image.set_margin_end(5)
 
+        # Vertical Name and Short Description (Comment)
         self.label_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.label_box.set_margin_start(5)
         self.title = Gtk.Label(xalign=0)
@@ -74,26 +76,22 @@ class ListApp(Gtk.Box):
                         AppStreamGlib.MarkupConvertFormat.SIMPLE
                     ), 80
                 ),
-
-                # app.comment
-
-                # textwrap.shorten(
-                #     app.comment,
-                #     80,
-                #     placeholder="..."
-                # )
             )
             self.comment.set_ellipsize(Pango.EllipsizeMode.END)
             self.label_box.add(self.comment)
 
+        # Adds spacing
         self.set_margin_start(10)
         self.set_margin_end(10)
         self.set_margin_top(10)
         self.set_margin_bottom(10)
+
+        # Icon, than name and comment
         self.add(self.image)
         self.add(self.label_box)
 
 
+# This class is used for apps in a grid view, used on the featured page.
 class GridView(Gtk.ScrolledWindow):
     def __init__(self, apps):
         Gtk.ScrolledWindow.__init__(self)
@@ -115,6 +113,8 @@ class GridView(Gtk.ScrolledWindow):
     def activated(self, flowbox, child):
         self.get_toplevel().load_app_page(child.app)
 
+
+# Used to show an app on a Grid View. It is literally just an icon and a label.
 class GridApp(Gtk.Box):
     def __init__(self, app):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
@@ -129,13 +129,13 @@ class GridApp(Gtk.Box):
         self.add(self.title)
 
 
-
+# Used for making grid views that contain featured apps.
 class Featured(Gtk.Box):
     def __init__(self, label, apps):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
         self.set_margin_top(10)
         self.set_margin_bottom(10)
-        self.label = Gtk.Label(label="Editor's Choice", xalign=0)
+        self.label = Gtk.Label(label=label, xalign=0)
         self.label.set_margin_start(10)
         self.label.set_markup("<big><b>" + label + "</b></big>")
         self.grid = GridView(apps)
@@ -143,6 +143,7 @@ class Featured(Gtk.Box):
         self.add(self.grid)
 
 
+# Simple Widget for a ListBoxLabel with set margins
 class ListBoxLabel(Gtk.Label):
     def __init__(self, text):
         Gtk.Label.__init__(self, label=text, xalign=0)
@@ -152,6 +153,7 @@ class ListBoxLabel(Gtk.Label):
         self.set_margin_bottom(10)
 
 
+# Icon label with set margins.
 class ListBoxLabelWithIcon(Gtk.Box):
     def __init__(self, text, icon):
         Gtk.Box.__init__(self)

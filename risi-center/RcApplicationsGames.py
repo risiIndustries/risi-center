@@ -2,6 +2,9 @@
 # Licensed Under GPL3
 # By PizzaLovingNerd
 
+# This page is almost identical to the featured page. Refer to that page for info about this code.
+# Eventually I will make this type of page into it's own class to avoid repe
+
 import gi
 import RcBaseWidgets
 import RcApps
@@ -28,6 +31,7 @@ class RcApplicationsGames(Gtk.ScrolledWindow):
         self.box.set_margin_top(30)
         self.box.set_margin_bottom(30)
         self.box.set_spacing(20)
+
         self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps))
         self.box.add(RcBaseWidgets.Featured("Best Graphics", test_apps))
 

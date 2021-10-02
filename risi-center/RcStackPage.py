@@ -1,3 +1,7 @@
+# Used to unload stack pages for memory management
+# Licensed Under GPL3
+# By PizzaLovingNerd
+
 import gi, time
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
@@ -15,14 +19,13 @@ class RcStackPage(Gtk.Box):
 
 def generate_widgets(stack, pages):
     for page in pages:
+        print(page.stack_widget)
         for child in page.get_children():
             child.destroy()
         if page == stack.get_visible_child():
             widget = page.stack_widget(*page.stack_widget_args, **page.stack_widget_kwargs)
             page.add(widget)
             widget.show_all()
-            print(widget)
-            # print(page.widget, RcApplicationsCategory.RcApplicationsCategory)
             if isinstance(widget, RcApplicationsCategory.RcApplicationsCategory):
                 widget.load_apps()
 

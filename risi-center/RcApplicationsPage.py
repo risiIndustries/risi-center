@@ -3,7 +3,6 @@
 # By PizzaLovingNerd
 
 import gi
-
 import RcApplicationsFeatured
 import RcApplicationsGames
 import RcApplicationsCategory
@@ -15,11 +14,13 @@ gi.require_version('AppStreamGlib', '1.0')
 from gi.repository import Gtk
 
 
+# This is the stack that is used for the "Applications" tab on the top of the window
 class RcApplicationsStack(Gtk.Box):
     def __init__(self, apps):
         Gtk.Box.__init__(self)
         self.stack = Gtk.Stack()
 
+        # I'm adding all the pages recursively using a list.
         self.pages = [
             RcStackPage.RcStackPage(
                 RcApplicationsFeatured.RcApplicationsFeatured,
@@ -93,9 +94,11 @@ class RcApplicationsStack(Gtk.Box):
             )
         ]
 
+        # Adds each page to the stack
         for page in self.pages:
             self.stack.add(page)
 
+        # Adds sidebar
         self.stack_sidebar = RcApplicationsSidebar.RcApplicationsSidebar(self)
         self.stack.set_visible_child(self.pages[0])
 
@@ -109,7 +112,6 @@ class RcApplicationsStack(Gtk.Box):
         #  Categories
         #  Search (on the bottom)
         #  Alternatives (on the bottom)
-
 
 def shown(widget):
     RcStackPage.generate_widgets(widget.stack, widget.pages)

@@ -10,6 +10,7 @@ gi.require_version('Gtk', '3.0')
 gi.require_version('AppStreamGlib', '1.0')
 from gi.repository import Gtk
 
+# Temporary, will remove once I add custom risiOS metadata.
 test_apps = {
     "app1": RcApps.test_app(),
     "app2": RcApps.test_app(),
@@ -28,7 +29,9 @@ class RcApplicationsFeatured(Gtk.ScrolledWindow):
         self.box.set_margin_top(30)
         self.box.set_margin_bottom(30)
         self.box.set_spacing(20)
-        self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps))
+
+        # Eventually I'll make it parse the json file so I can change the categories at will without code changes
+        self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps)) # test_apps needs to be replaced with features apps from an api
         self.box.add(RcBaseWidgets.Featured("Used By The risiOS Team", test_apps))
 
         self.set_hexpand(True)
