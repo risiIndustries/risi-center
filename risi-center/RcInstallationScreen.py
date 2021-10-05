@@ -11,6 +11,9 @@ from gi.repository import Gtk
 class RcInstallationScreen(Gtk.Box):
     def __init__(self, app):
         Gtk.Box.__init__(self, orientation=Gtk.Orientation.VERTICAL)
+        self.set_margin_top(10)
+        self.set_margin_right(10)
+        self.set_margin_left(10)
         self.add(Top(app))
 
 # Top part which combines the TopLeft and TopRight
@@ -54,7 +57,6 @@ class TopRight(Gtk.Box):
         # Creates dropdown for package sources and adds sources to the dropdown.
         self.combobox = Gtk.ComboBoxText()
         for origin in app.origins:
-            print(origin)
             self.combobox.append_text(
                 RcApps.get_source_from_origin(origin).origin_name
             )

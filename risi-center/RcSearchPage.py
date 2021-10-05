@@ -1,4 +1,4 @@
-# Featured Categories Page in Applications Tab
+# Featured Search Page in Applications Tab
 # Licensed Under GPL3
 # By PizzaLovingNerd
 
@@ -15,7 +15,7 @@ from gi.repository import Gtk
 from gi.repository import GLib
 
 # This is used for the category pages in risiSoftware Center
-class RcApplicationsCategory(Gtk.ScrolledWindow):
+class RcSearchpage(Gtk.ScrolledWindow):
     def __init__(self, apps, category, **kwargs):
         Gtk.ScrolledWindow.__init__(self)
 

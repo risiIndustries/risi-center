@@ -28,6 +28,7 @@ missing_icon = Gtk.IconTheme.get_default().load_icon(
 
 sources = []
 
+
 # These are the commands a VTE will call when a action for a package is ran
 class SourceCommands:
     def __init__(self):
@@ -35,6 +36,7 @@ class SourceCommands:
         self.remove = []
         self.upgrade = []
         self.upgrade_all = []
+
 
 # This is used to setup new sources that apps may come from.
 class AppSource:
@@ -46,6 +48,7 @@ class AppSource:
         self.commands = get_source_commands(package_type=self.package_type, origin=self.origin)
 
         sources.append(self)
+
 
 # Gets the source commands and returns them depending on the package manager.
 def get_source_commands(*args, **kwargs):
@@ -61,6 +64,7 @@ def get_source_commands(*args, **kwargs):
         commands.remove = ["flatpak", "uninstall"]
         commands.upgrade = ["flatpak", "update"]
         commands.upgrade_all = ["flatpak", "update"]
+
 
 # Gets the source from origin (repo name)
 def get_source_from_origin(origin):
@@ -86,7 +90,7 @@ def test_app():
             Gtk.IconLookupFlags.GENERIC_FALLBACK
         ),
 
-        origin=["archlinux-arch-core", "archlinux-arch-extra"]
+        origin=["fedora", "flathub"]
     )
 
 
@@ -226,6 +230,7 @@ def dict_combine(d1, d2):
         else:
             d1[key] = d2[key]
     return d1
+
 
 # Checks if apps are in a category (Can be moved to category page class)
 def category_filter(app, category):
