@@ -8,6 +8,7 @@ import RcApplicationsGames
 import RcApplicationsCategory
 import RcApplicationsSidebar
 import RcStackPage
+import RcSearchPage
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppStreamGlib', '1.0')
@@ -91,6 +92,16 @@ class RcApplicationsStack(Gtk.Box):
                 "video",
                 apps,
                 "Video"
+            ),
+            RcStackPage.RcStackPage(
+                RcSearchPage.RcSearchPage,
+                "alternatives",
+                apps
+            ),
+            RcStackPage.RcStackPage(
+                RcSearchPage.RcSearchPage,
+                "search",
+                apps
             )
         ]
 

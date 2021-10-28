@@ -42,7 +42,10 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
             2: self.reveal_category
         }
         self.category_case = {}
-        self.bottom_list_case = {}
+        self.bottom_list_case = {
+            0: "alternatives",
+            1: "search"
+        }
 
         # The top part of the sidebar
         self.top_list = Gtk.ListBox()
@@ -101,7 +104,11 @@ class RcApplicationsSidebar(Gtk.ScrolledWindow):
     def bottom_listbox_clicked(self, listbox, listbox_row):
         self.top_list.unselect_all()
         self.category_list.unselect_all()
-
+        RcStackPage.set_child(
+            self.stack.stack,
+            self.stack.pages,
+            self.bottom_list_case[listbox_row.get_index()]
+        )
 
     # Functions for each button on the top row.
     def reveal_category(self):

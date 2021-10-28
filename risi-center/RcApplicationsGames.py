@@ -3,7 +3,7 @@
 # By PizzaLovingNerd
 
 # This page is almost identical to the featured page. Refer to that page for info about this code.
-# Eventually I will make this type of page into it's own class to avoid repe
+# Eventually I will make this type of page into it's own class to avoid repeating code.
 
 import gi
 import RcBaseWidgets

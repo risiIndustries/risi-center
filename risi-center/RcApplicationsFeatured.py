@@ -31,7 +31,8 @@ class RcApplicationsFeatured(Gtk.ScrolledWindow):
         self.box.set_spacing(20)
 
         # Eventually I'll make it parse the json file so I can change the categories at will without code changes
-        self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps)) # test_apps needs to be replaced with features apps from an api
+        # test_apps needs to be replaced with features apps from an api
+        self.box.add(RcBaseWidgets.Featured("Editor's Choice", test_apps))
         self.box.add(RcBaseWidgets.Featured("Used By The risiOS Team", test_apps))
 
         self.set_hexpand(True)

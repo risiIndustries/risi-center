@@ -19,15 +19,14 @@ class RcStackPage(Gtk.Box):
 
 def generate_widgets(stack, pages):
     for page in pages:
-        print(page.stack_widget)
         for child in page.get_children():
             child.destroy()
         if page == stack.get_visible_child():
             widget = page.stack_widget(*page.stack_widget_args, **page.stack_widget_kwargs)
             page.add(widget)
             widget.show_all()
-            if isinstance(widget, RcApplicationsCategory.RcApplicationsCategory):
-                widget.load_apps()
+            if hasattr(widget, "load_page"):
+                widget.load_page()
 
 
 def get_page_by_id(pages, page_id):

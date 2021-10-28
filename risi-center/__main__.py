@@ -17,7 +17,7 @@ class Application(Gtk.Application):
         )
         self.window = None
 
-    def do_activate(self): #Checks if window is already open before starting a new one
+    def do_activate(self):  # Checks if window is already open before starting a new one
         if not self.window:
             self.window = RcMainWindow.RcMainWindow(self)
             self.add_window(self.window)
